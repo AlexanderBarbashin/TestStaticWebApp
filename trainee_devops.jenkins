@@ -24,10 +24,8 @@ pipeline {
             }
         stage('Upload to s3') {
             steps {
-                script {
-                    s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'test-jenkins-barbashin/test_web_app', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'eu-west-1', showDirectlyInBrowser: false, sourceFile: '**', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'S3-test', userMetadata: []
-                    }
-                }
+                sh 'aws s3 sync . s3://test-jenkins-barbashin/test_web_app/ --delete'
+            }
             }
         }
     }
