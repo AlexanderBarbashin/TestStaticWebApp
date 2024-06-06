@@ -24,7 +24,7 @@ pipeline {
             }
         stage('Upload to s3') {
             steps {
-                sh 'aws s3 sync . s3://test-jenkins-barbashin/test_web_app/ --delete'
+                sh 'aws s3 sync ./ s3://test-jenkins-barbashin/test_web_app/ --delete'
             }
             }
         }
