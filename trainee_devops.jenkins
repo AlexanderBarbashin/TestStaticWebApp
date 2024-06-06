@@ -1,0 +1,33 @@
+#!groovy
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent { 
+        label 'host'
+        }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
+    stages {
+        stage ('Build stage') {
+            steps {
+                sh 'git clone https://github.com/AlexanderBarbashin/TestStaticWebApp.git; cd wedding-website; npm install; gulp'
+            }
+        }
+        stage('Archive') {
+            steps {
+                script {
+                    archiveArtifacts artifacts: '**', followSymlinks: false
+                    }
+                }
+            }
+        stage('Upload to s3') {
+            steps {
+                script {
+                    s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'test-jenkins-barbashin/test_web_app', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'eu-west-1', showDirectlyInBrowser: false, sourceFile: '**', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'S3-test', userMetadata: []
+                    }
+                }
+            }
+        }
+    }
