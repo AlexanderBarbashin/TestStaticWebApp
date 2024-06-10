@@ -1,0 +1,19 @@
+#!groovy
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent {
+        label 'host'
+        }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
+    stages {
+        stage ('Build stage') {
+            steps {
+                sh 'rm -rf ~/TestNginxProject; mkdir ~/TestNginxProject; cd ~/TestNginxProject; git clone https://github.com/AlexanderBarbashin/TestStaticWebApp.git; cd TestStaticWebApp; npm install; gulp'
+            }
+        }
+        }
+    }
