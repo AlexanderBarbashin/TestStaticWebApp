@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage ('Build stage') {
             steps {
-                sh 'cd /var/www; sudo rm -rf test_nginx; sudo mkdir test_nginx; cd test_nginx; sudo git clone https://github.com/AlexanderBarbashin/TestStaticWebApp.git; cd TestStaticWebApp; sudo npm install; gulp'
+                sh 'cd /var/www; sudo rm -rf test_nginx; sudo mkdir test_nginx; cd test_nginx; sudo git clone https://github.com/AlexanderBarbashin/TestStaticWebApp.git; cd TestStaticWebApp; sudo npm install; sudo gulp'
             }
         }
         }
